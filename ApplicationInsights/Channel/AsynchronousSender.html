@@ -1,0 +1,630 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: ApplicationInsights::Channel::AsynchronousSender
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!ApplicationInsights/Channel/AsynchronousSender.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (A)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../ApplicationInsights.html" title="ApplicationInsights (module)">ApplicationInsights</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Channel.html" title="ApplicationInsights::Channel (module)">Channel</a></span></span>
+     &raquo; 
+    <span class="title">AsynchronousSender</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: ApplicationInsights::Channel::AsynchronousSender
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="SenderBase.html" title="ApplicationInsights::Channel::SenderBase (class)">SenderBase</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="SenderBase.html" title="ApplicationInsights::Channel::SenderBase (class)">SenderBase</a></span></li>
+          
+            <li class="next">ApplicationInsights::Channel::AsynchronousSender</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/application_insights/channel/asynchronous_sender.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>An asynchronous sender that works in conjunction with the
+<span class='object_link'><a href="AsynchronousQueue.html" title="ApplicationInsights::Channel::AsynchronousQueue (class)">AsynchronousQueue</a></span>. The sender object will start a worker thread that will
+pull items from the <span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span>. The thread will be created when the client
+calls <span class='object_link'><a href="#start-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#start (method)">#start</a></span> and will check for queue items every <span class='object_link'><a href="#send_interval-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_interval (method)">#send_interval</a></span>
+seconds. The worker thread can also be forced to check the queue by setting
+the <span class='object_link'><a href="AsynchronousQueue.html#flush_notification-instance_method" title="ApplicationInsights::Channel::AsynchronousQueue#flush_notification (method)">ApplicationInsights::Channel::AsynchronousQueue#flush_notification</a></span> event.</p>
+<ul><li>
+<p>If no items are found, the thread will go back to sleep.</p>
+</li><li>
+<p>If items are found, the worker thread will send items to the specified
+service in batches of <span class='object_link'><a href="SenderBase.html#send_buffer_size-instance_method" title="ApplicationInsights::Channel::SenderBase#send_buffer_size (method)">SenderBase#send_buffer_size</a></span>.</p>
+</li></ul>
+
+<p>If no queue items are found for <span class='object_link'><a href="#send_time-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_time (method)">#send_time</a></span> seconds,  the worker thread
+will shut down (and <span class='object_link'><a href="#start-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#start (method)">#start</a></span> will need  to be called again).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#send_interval-instance_method" title="#send_interval (instance method)">- (Fixnum) <strong>send_interval</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The time span in seconds at which the the worker thread will check the
+<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for items (defaults to: 1.0).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#send_time-instance_method" title="#send_time (instance method)">- (Fixnum) <strong>send_time</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The time span in seconds for which the worker thread will stay alive if no
+items are found in the <span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> (defaults to 3.0).</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="SenderBase.html" title="ApplicationInsights::Channel::SenderBase (class)">SenderBase</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">#queue</a></span>, <span class='object_link'><a href="SenderBase.html#send_buffer_size-instance_method" title="ApplicationInsights::Channel::SenderBase#send_buffer_size (method)">#send_buffer_size</a></span>, <span class='object_link'><a href="SenderBase.html#service_endpoint_uri-instance_method" title="ApplicationInsights::Channel::SenderBase#service_endpoint_uri (method)">#service_endpoint_uri</a></span></p>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (AsynchronousSender) <strong>initialize</strong>(service_endpoint_uri = &#39;https://dc.services.visualstudio.com/v2/track&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Initializes a new instance of the class.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start-instance_method" title="#start (instance method)">- (Object) <strong>start</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calling this method will create a worker thread that checks the <span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span>
+every <span class='object_link'><a href="#send_interval-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_interval (method)">#send_interval</a></span> seconds for a total duration of <span class='object_link'><a href="#send_time-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_time (method)">#send_time</a></span> seconds
+for new items.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calling this method will shut down the worker thread that checks the
+<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for new items.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="SenderBase.html" title="ApplicationInsights::Channel::SenderBase (class)">SenderBase</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="SenderBase.html#send-instance_method" title="ApplicationInsights::Channel::SenderBase#send (method)">#send</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="ApplicationInsights::Channel::AsynchronousSender (class)">AsynchronousSender</a></span></tt>) <strong>initialize</strong>(service_endpoint_uri = &#39;https://dc.services.visualstudio.com/v2/track&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Initializes a new instance of the class.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>service_endpoint_uri</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;https://dc.services.visualstudio.com/v2/track&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the address of the service to send telemetry data to.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+19
+20
+21
+22
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 19</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span><span class='op'>=</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https://dc.services.visualstudio.com/v2/track</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@send_interval</span> <span class='op'>=</span> <span class='float'>1.0</span>
+  <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='ivar'>@send_time</span> <span class='op'>=</span> <span class='float'>3.0</span>
+  <span class='ivar'>@lock_send_remaining_time</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>super</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="send_interval=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="send_interval-instance_method">
+  
+    - (<tt>Fixnum</tt>) <strong>send_interval</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The time span in seconds at which the the worker thread will check the
+<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for items (defaults to: 1.0).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the interval in seconds.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 29</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_send_interval'>send_interval</span>
+  <span class='ivar'>@send_interval</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="send_time=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="send_time-instance_method">
+  
+    - (<tt>Fixnum</tt>) <strong>send_time</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The time span in seconds for which the worker thread will stay alive if no
+items are found in the <span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> (defaults to 3.0).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the interval in seconds.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+33
+34
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 33</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_send_time'>send_time</span>
+  <span class='ivar'>@send_time</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="start-instance_method">
+  
+    - (<tt>Object</tt>) <strong>start</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calling this method will create a worker thread that checks the <span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span>
+every <span class='object_link'><a href="#send_interval-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_interval (method)">#send_interval</a></span> seconds for a total duration of <span class='object_link'><a href="#send_time-instance_method" title="ApplicationInsights::Channel::AsynchronousSender#send_time (method)">#send_time</a></span> seconds
+for new items. If a worker thread has already been created, calling this
+method does nothing.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span>
+  <span class='ivar'>@lock_send_remaining_time</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='kw'>if</span> <span class='ivar'>@send_remaining_time</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_interval</span> <span class='op'>&lt;</span> <span class='float'>0.1</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='float'>0.1</span> <span class='op'>:</span> <span class='ivar'>@send_interval</span>
+      <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_time</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>:</span> <span class='ivar'>@send_time</span>
+      <span class='id identifier rubyid_thread'>thread</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_run'>run</span>
+      <span class='kw'>end</span>
+      <span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_abort_on_exception'>abort_on_exception</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop-instance_method">
+  
+    - (<tt>Object</tt>) <strong>stop</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calling this method will shut down the worker thread that checks the
+<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for new items. The thread will be allowed to shut down gracefully.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55
+56
+57</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 53</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span>
+  <span class='ivar'>@lock_send_remaining_time</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Dec 22 21:40:26 2014 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>
