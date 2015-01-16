@@ -322,14 +322,14 @@ call <span class='object_link'><a href="#send-instance_method" title="Applicatio
       <pre class="lines">
 
 
-13
-14
 15
 16
-17</pre>
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span><span class='rparen'>)</span>
   <span class='ivar'>@service_endpoint_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
@@ -360,7 +360,7 @@ call <span class='object_link'><a href="#send-instance_method" title="Applicatio
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>The queue that this sender is draining. While <span class='object_link'><a href="" title="ApplicationInsights::Channel::SenderBase (class)">ApplicationInsights::Channel::SenderBase</a></span> doesn&#39;t
+<p>The queue that this sender is draining. While <span class='object_link'><a href="" title="ApplicationInsights::Channel::SenderBase (class)">ApplicationInsights::Channel::SenderBase</a></span> doesn't
 implement any means of doing so, derivations of this class do.</p>
 
 
@@ -393,12 +393,12 @@ implement any means of doing so, derivations of this class do.</p>
       <pre class="lines">
 
 
-26
-27
-28</pre>
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_queue'>queue</span>
   <span class='ivar'>@queue</span>
@@ -455,12 +455,12 @@ of items in a single service request that this sender is going to send.</p>
       <pre class="lines">
 
 
-31
-32
-33</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_buffer_size'>send_buffer_size</span>
   <span class='ivar'>@send_buffer_size</span>
@@ -516,12 +516,12 @@ of items in a single service request that this sender is going to send.</p>
       <pre class="lines">
 
 
-21
-22
-23</pre>
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
   <span class='ivar'>@service_endpoint_uri</span>
@@ -585,8 +585,6 @@ service request fails, the passed in items are pushed back to the <span class='o
       <pre class="lines">
 
 
-36
-37
 38
 39
 40
@@ -605,18 +603,32 @@ service request fails, the passed in items are pushed back to the <span class='o
 53
 54
 55
-56</pre>
+56
+57
+58
+59
+60
+61
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_data_to_send'>data_to_send</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_uri'>uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='lparen'>(</span><span class='ivar'>@service_endpoint_uri</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Post</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json; charset=utf-8</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='id identifier rubyid_data_to_send'>data_to_send</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='id identifier rubyid_headers'>headers</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Accept</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>application/json</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>application/json; charset=utf-8</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Content-Encoding</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>gzip</span><span class='tstring_end'>'</span></span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Post</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_headers'>headers</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_compressed_data'>compressed_data</span> <span class='op'>=</span> <span class='id identifier rubyid_compress'>compress</span><span class='lparen'>(</span><span class='id identifier rubyid_data_to_send'>data_to_send</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='id identifier rubyid_compressed_data'>compressed_data</span>
 
   <span class='id identifier rubyid_http'>http</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_hostname'>hostname</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_port'>port</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>https</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>https</span><span class='tstring_end'>'</span></span>
     <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_verify_mode'>verify_mode</span> <span class='op'>=</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>SSL</span><span class='op'>::</span><span class='const'>VERIFY_NONE</span>
   <span class='kw'>end</span>
@@ -641,9 +653,9 @@ service request fails, the passed in items are pushed back to the <span class='o
 </div>
 
     <div id="footer">
-  Generated on Mon Dec 22 21:40:25 2014 by
+  Generated on Thu Jan 15 16:20:37 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.0.0).
+  0.8.7.6 (ruby-1.9.3).
 </div>
 
   </body>
