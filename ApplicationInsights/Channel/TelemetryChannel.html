@@ -371,13 +371,13 @@ telemetry context.</p>
       <pre class="lines">
 
 
-23
 24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_context'>context</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_queue'>queue</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@context</span> <span class='op'>=</span> <span class='id identifier rubyid_context'>context</span> <span class='op'>||</span> <span class='const'>TelemetryContext</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -441,12 +441,12 @@ specified as part of the <span class='object_link'><a href="#write-instance_meth
       <pre class="lines">
 
 
-31
 32
-33</pre>
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_context'>context</span>
   <span class='ivar'>@context</span>
@@ -503,12 +503,12 @@ created by this channel will be pushed to this queue.</p>
       <pre class="lines">
 
 
-36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_queue'>queue</span>
   <span class='ivar'>@queue</span>
@@ -551,12 +551,12 @@ created by this channel will be pushed to this queue.</p>
       <pre class="lines">
 
 
-45
 46
-47</pre>
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span>
   <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
@@ -611,12 +611,12 @@ transmit telemetry to the service.</p>
       <pre class="lines">
 
 
-40
 41
-42</pre>
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sender'>sender</span>
   <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_sender'>sender</span>
@@ -705,7 +705,6 @@ context as well, it will take precedence over the instance in <span class='objec
       <pre class="lines">
 
 
-54
 55
 56
 57
@@ -723,10 +722,11 @@ context as well, it will take precedence over the instance in <span class='objec
 69
 70
 71
-72</pre>
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/telemetry_channel.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_context'>context</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_local_context'>local_context</span> <span class='op'>=</span> <span class='id identifier rubyid_context'>context</span> <span class='op'>||</span> <span class='ivar'>@context</span>
@@ -739,7 +739,7 @@ context as well, it will take precedence over the instance in <span class='objec
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_envelope_attributes'>envelope_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
     <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Microsoft.ApplicationInsights.</span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='id identifier rubyid_data_type'>data_type</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='op'>-</span><span class='int'>5</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='symbol'>:time</span> <span class='op'>=&gt;</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_getutc'>getutc</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>%FT%T.%6NZ</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='symbol'>:time</span> <span class='op'>=&gt;</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='lparen'>(</span><span class='int'>7</span><span class='rparen'>)</span><span class='comma'>,</span>
     <span class='symbol'>:i_key</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_local_context'>local_context</span><span class='period'>.</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span><span class='comma'>,</span>
     <span class='symbol'>:tags</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_get_tags'>get_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_local_context'>local_context</span><span class='rparen'>)</span><span class='comma'>,</span>
     <span class='symbol'>:data</span> <span class='op'>=&gt;</span> <span class='const'>Contracts</span><span class='op'>::</span><span class='const'>Data</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_data_attributes'>data_attributes</span><span class='rparen'>)</span>
@@ -757,7 +757,7 @@ context as well, it will take precedence over the instance in <span class='objec
 </div>
 
     <div id="footer">
-  Generated on Thu Jan 15 16:20:37 2015 by
+  Generated on Tue Feb 10 13:57:25 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-1.9.3).
 </div>

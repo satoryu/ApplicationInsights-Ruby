@@ -289,31 +289,6 @@ for new items.</p>
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#stop-instance_method" title="#stop (instance method)">- (Object) <strong>stop</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Calling this method will shut down the worker thread that checks the
-<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for new items.</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -386,7 +361,8 @@ for new items.</p>
 23
 24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 19</span>
@@ -395,8 +371,9 @@ for new items.</p>
   <span class='ivar'>@send_interval</span> <span class='op'>=</span> <span class='float'>1.0</span>
   <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='int'>0</span>
   <span class='ivar'>@send_time</span> <span class='op'>=</span> <span class='float'>3.0</span>
-  <span class='ivar'>@lock_send_remaining_time</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@lock_work_thread</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@work_thread</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@start_notification_processed</span> <span class='op'>=</span> <span class='kw'>true</span>
   <span class='kw'>super</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -456,12 +433,12 @@ for new items.</p>
       <pre class="lines">
 
 
-30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_interval'>send_interval</span>
   <span class='ivar'>@send_interval</span>
@@ -518,12 +495,12 @@ items are found in the <span class='object_link'><a href="SenderBase.html#queue-
       <pre class="lines">
 
 
-34
 35
-36</pre>
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_time'>send_time</span>
   <span class='ivar'>@send_time</span>
@@ -580,12 +557,12 @@ items are found in the <span class='object_link'><a href="SenderBase.html#queue-
       <pre class="lines">
 
 
-38
 39
-40</pre>
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_work_thread'>work_thread</span>
   <span class='ivar'>@work_thread</span>
@@ -631,7 +608,6 @@ method does nothing.</p>
       <pre class="lines">
 
 
-43
 44
 45
 46
@@ -643,68 +619,29 @@ method does nothing.</p>
 52
 53
 54
-55</pre>
+55
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span>
-  <span class='ivar'>@lock_send_remaining_time</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-    <span class='comment'># only maintain one working thread at one time
-</span>    <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@work_thread</span>
-      <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_interval</span> <span class='op'>&lt;</span> <span class='float'>0.1</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='float'>0.1</span> <span class='op'>:</span> <span class='ivar'>@send_interval</span>
-      <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_time</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>:</span> <span class='ivar'>@send_time</span>
-      <span class='ivar'>@work_thread</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
-        <span class='id identifier rubyid_run'>run</span>
+  <span class='ivar'>@start_notification_processed</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='comment'># Maintain one working thread at one time
+</span>  <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@work_thread</span>
+    <span class='ivar'>@lock_work_thread</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+      <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@work_thread</span>
+        <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_interval</span> <span class='op'>&lt;</span> <span class='float'>0.1</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='float'>0.1</span> <span class='op'>:</span> <span class='ivar'>@send_interval</span>
+        <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@send_time</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_local_send_interval'>local_send_interval</span> <span class='op'>:</span> <span class='ivar'>@send_time</span>
+        <span class='ivar'>@work_thread</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+          <span class='id identifier rubyid_run'>run</span>
+        <span class='kw'>end</span>
+        <span class='ivar'>@work_thread</span><span class='period'>.</span><span class='id identifier rubyid_abort_on_exception'>abort_on_exception</span> <span class='op'>=</span> <span class='kw'>false</span>
       <span class='kw'>end</span>
-      <span class='ivar'>@work_thread</span><span class='period'>.</span><span class='id identifier rubyid_abort_on_exception'>abort_on_exception</span> <span class='op'>=</span> <span class='kw'>false</span>
     <span class='kw'>end</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="stop-instance_method">
-  
-    - (<tt>Object</tt>) <strong>stop</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Calling this method will shut down the worker thread that checks the
-<span class='object_link'><a href="SenderBase.html#queue-instance_method" title="ApplicationInsights::Channel::SenderBase#queue (method)">SenderBase#queue</a></span> for new items. The thread will be allowed to shut down gracefully.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-59
-60
-61
-62
-63</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/asynchronous_sender.rb', line 59</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_stop'>stop</span>
-  <span class='ivar'>@lock_send_remaining_time</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
-    <span class='ivar'>@send_remaining_time</span> <span class='op'>=</span> <span class='int'>0</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -717,7 +654,7 @@ method does nothing.</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Jan 15 16:20:38 2015 by
+  Generated on Tue Feb 10 13:57:25 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-1.9.3).
 </div>

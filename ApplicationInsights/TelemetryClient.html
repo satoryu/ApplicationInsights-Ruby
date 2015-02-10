@@ -216,7 +216,7 @@ the main entry point for interacting with the Application Insights service.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (TelemetryClient) <strong>initialize</strong>(telemetry_channel = nil) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (TelemetryClient) <strong>initialize</strong>(instrumentation_key = nil, telemetry_channel = nil) </a>
     
 
     
@@ -341,7 +341,31 @@ instance).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#track_trace-instance_method" title="#track_trace (instance method)">- (Object) <strong>track_trace</strong>(name, options = {}) </a>
+      <a href="#track_request-instance_method" title="#track_request (instance method)">- (Object) <strong>track_request</strong>(id, start_time, duration, response_code, success, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sends a single request.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#track_trace-instance_method" title="#track_trace (instance method)">- (Object) <strong>track_trace</strong>(name, severity_level = Channel::Contracts::SeverityLevel::INFORMATION, options = {}) </a>
     
 
     
@@ -371,7 +395,7 @@ instance).</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ApplicationInsights::TelemetryClient (class)">TelemetryClient</a></span></tt>) <strong>initialize</strong>(telemetry_channel = nil) 
+    - (<tt><span class='object_link'><a href="" title="ApplicationInsights::TelemetryClient (class)">TelemetryClient</a></span></tt>) <strong>initialize</strong>(instrumentation_key = nil, telemetry_channel = nil) 
   
 
   
@@ -388,6 +412,24 @@ instance).</p>
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
+  
+    <li>
+      
+        <span class='name'>instrumentation_key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>to identify which Application Insights application this data is for.</p>
+</div>
+      
+    </li>
   
     <li>
       
@@ -417,16 +459,18 @@ one.</p>
       <pre class="lines">
 
 
-20
-21
-22
-23</pre>
+23
+24
+25
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 23</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_telemetry_channel'>telemetry_channel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_telemetry_channel'>telemetry_channel</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@context</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>TelemetryContext</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@context</span><span class='period'>.</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span> <span class='op'>=</span> <span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span>
   <span class='ivar'>@channel</span> <span class='op'>=</span> <span class='id identifier rubyid_telemetry_channel'>telemetry_channel</span> <span class='op'>||</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>TelemetryChannel</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -487,12 +531,12 @@ client will be passed along with the <span class='object_link'><a href="#context
       <pre class="lines">
 
 
-33
-34
-35</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_channel'>channel</span>
   <span class='ivar'>@channel</span>
@@ -549,12 +593,12 @@ client will be accompanied by this value.</p>
       <pre class="lines">
 
 
-28
-29
-30</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_context'>context</span>
   <span class='ivar'>@context</span>
@@ -598,12 +642,12 @@ immediately irrespective of what sender is being used.</p>
       <pre class="lines">
 
 
-176
-177
-178</pre>
+213
+214
+215</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 213</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_channel'>channel</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
@@ -717,18 +761,18 @@ the application.</p>
       <pre class="lines">
 
 
-112
-113
-114
-115
 116
 117
 118
 119
-120</pre>
+120
+121
+122
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 116</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_track_event'>track_event</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_attributes'>data_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -860,10 +904,6 @@ the application.</p>
       <pre class="lines">
 
 
-64
-65
-66
-67
 68
 69
 70
@@ -899,10 +939,14 @@ the application.</p>
 100
 101
 102
-103</pre>
+103
+104
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_track_exception'>track_exception</span><span class='lparen'>(</span><span class='id identifier rubyid_exception'>exception</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span> <span class='const'>Exception</span>
@@ -926,7 +970,7 @@ the application.</p>
     <span class='id identifier rubyid_details_attributes'>details_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
       <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='comma'>,</span>
       <span class='symbol'>:outer_id</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
-      <span class='symbol'>:type_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='comma'>,</span>
+      <span class='symbol'>:type_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span>
       <span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span>
       <span class='symbol'>:has_full_stack</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span> <span class='op'>!=</span> <span class='kw'>nil</span><span class='comma'>,</span>
       <span class='symbol'>:stack</span> <span class='op'>=&gt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_exception'>exception</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='rparen'>)</span><span class='comma'>,</span>
@@ -1141,10 +1185,6 @@ this data point (defaults to: 0)</p>
       <pre class="lines">
 
 
-140
-141
-142
-143
 144
 145
 146
@@ -1159,10 +1199,14 @@ this data point (defaults to: 0)</p>
 155
 156
 157
-158</pre>
+158
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_track_metric'>track_metric</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_point_attributes'>data_point_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -1323,20 +1367,20 @@ instance).</p>
       <pre class="lines">
 
 
-44
-45
-46
-47
 48
 49
 50
 51
 52
 53
-54</pre>
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_track_page_view'>track_page_view</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_attributes'>data_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -1355,9 +1399,264 @@ instance).</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="track_request-instance_method">
+  
+    - (<tt>Object</tt>) <strong>track_request</strong>(id, start_time, duration, response_code, success, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sends a single request.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the unique identifier of the request.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>start_time</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the start time of the request.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>duration</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the duration to process the request.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>response_code</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the response code of the request.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>success</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>indicates whether the request succeeds or not.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the options to create the <span class='object_link'><a href="Channel/Contracts/RequestData.html" title="ApplicationInsights::Channel::Contracts::RequestData (class)">Channel::Contracts::RequestData</a></span> object.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <p class="tag_title">Options Hash (<tt>options</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:name</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the name of the request.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:http_method</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the http method used for the request.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:url</span>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the url of the request.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:properties</span>
+          <span class="type">(<tt>Hash</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the set of custom properties the client wants attached to this data item.
+(defaults to: {})</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:measurements</span>
+          <span class="type">(<tt>Hash</tt>)</span>
+          <span class="default">
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>the set of custom measurements the client wants to attach to this data item
+(defaults to: {})</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 194</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_track_request'>track_request</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_start_time'>start_time</span><span class='comma'>,</span> <span class='id identifier rubyid_duration'>duration</span><span class='comma'>,</span> <span class='id identifier rubyid_response_code'>response_code</span><span class='comma'>,</span> <span class='id identifier rubyid_success'>success</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_data_attributes'>data_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_id'>id</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Null</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+      <span class='symbol'>:start_time</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>||</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='lparen'>(</span><span class='int'>7</span><span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='symbol'>:duration</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_duration'>duration</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>0:00:00:00.0000000</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+      <span class='symbol'>:response_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_response_code'>response_code</span> <span class='op'>||</span> <span class='int'>200</span><span class='comma'>,</span>
+      <span class='symbol'>:success</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_success'>success</span> <span class='op'>=</span> <span class='kw'>nil</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='id identifier rubyid_success'>success</span><span class='comma'>,</span>
+      <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='symbol'>:http_method</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:http_method</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='symbol'>:url</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:url</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='symbol'>:properties</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:properties</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+      <span class='symbol'>:measurements</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:measurements</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>Contracts</span><span class='op'>::</span><span class='const'>RequestData</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_data_attributes'>data_attributes</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_channel'>channel</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_context'>context</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="track_trace-instance_method">
   
-    - (<tt>Object</tt>) <strong>track_trace</strong>(name, options = {}) 
+    - (<tt>Object</tt>) <strong>track_trace</strong>(name, severity_level = Channel::Contracts::SeverityLevel::INFORMATION, options = {}) 
   
 
   
@@ -1393,6 +1692,24 @@ instance).</p>
   
     <li>
       
+        <span class='name'>severity_level</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Channel/Contracts/SeverityLevel.html" title="ApplicationInsights::Channel::Contracts::SeverityLevel (class)">Channel::Contracts::SeverityLevel</a></span></tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>Channel::Contracts::SeverityLevel::INFORMATION</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the severity level.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>options</span>
       
       
@@ -1412,6 +1729,8 @@ instance).</p>
 </ul>
 
   
+    
+    
     
     
     
@@ -1443,22 +1762,24 @@ instance).</p>
       <pre class="lines">
 
 
-165
-166
-167
-168
-169
 170
 171
-172</pre>
+172
+173
+174
+175
+176
+177
+178</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/telemetry_client.rb', line 170</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_track_trace'>track_trace</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_track_trace'>track_trace</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_severity_level'>severity_level</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>Contracts</span><span class='op'>::</span><span class='const'>SeverityLevel</span><span class='op'>::</span><span class='const'>INFORMATION</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data_attributes'>data_attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Null</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
-    <span class='symbol'>:properties</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:properties</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
+      <span class='symbol'>:message</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_name'>name</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Null</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+      <span class='symbol'>:severity_level</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_severity_level'>severity_level</span> <span class='op'>||</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>Contracts</span><span class='op'>::</span><span class='const'>SeverityLevel</span><span class='op'>::</span><span class='const'>INFORMATION</span><span class='comma'>,</span>
+      <span class='symbol'>:properties</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:properties</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>Contracts</span><span class='op'>::</span><span class='const'>MessageData</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_data_attributes'>data_attributes</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_channel'>channel</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_context'>context</span><span class='rparen'>)</span>
@@ -1473,7 +1794,7 @@ instance).</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Jan 15 16:20:36 2015 by
+  Generated on Tue Feb 10 13:57:24 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-1.9.3).
 </div>
