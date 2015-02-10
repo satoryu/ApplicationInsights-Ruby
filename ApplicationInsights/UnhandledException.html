@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: ApplicationInsights::UnhandledException
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!ApplicationInsights/UnhandledException.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (U)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../ApplicationInsights.html" title="ApplicationInsights (module)">ApplicationInsights</a></span></span>
+     &raquo; 
+    <span class="title">UnhandledException</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: ApplicationInsights::UnhandledException
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/application_insights/unhandled_exception.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#collect-class_method" title="collect (class method)">+ (Object) <strong>collect</strong>(instrumentation_key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Auto collects unhandled exception and send to the Application Insights
+service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#send-class_method" title="send (class method)">+ (Object) <strong>send</strong>(instrumentation_key, telemetry_sender = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  <span class="private note title">private</span>
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Send the last raised exception to the Application Insights service if
+telemetry_sender is not customized.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="collect-class_method">
+  
+    + (<tt>Object</tt>) <strong>collect</strong>(instrumentation_key) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Auto collects unhandled exception and send to the Application Insights
+service.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>application_insights</span><span class='tstring_end'>'</span></span>
+<span class='const'>ApplicationInsights</span><span class='op'>::</span><span class='const'>UnhandledException</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>&lt;YOUR INSTRUMENTATION KEY GOES HERE&gt;</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_raise'>raise</span> <span class='const'>Exception</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Boom!</span><span class='tstring_end'>'</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>instrumentation_key</span>
+      
+      
+        <span class='type'>(<tt>string</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used to identify which Application Insights application this data is for.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+18
+19
+20
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/unhandled_exception.rb', line 18</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lparen'>(</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_at_exit'>at_exit</span> <span class='kw'>do</span>
+    <span class='comment'># Avoid sending exception more than once if this method got invoked multiple times
+</span>    <span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='op'>!</span><span class='ivar'>@sender</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="send-class_method">
+  
+    + (<tt>Object</tt>) <strong>send</strong>(instrumentation_key, telemetry_sender = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note private">
+  <strong>This method is part of a private API.</strong>
+  You should avoid using this method if possible, as it may be removed or be changed in the future.
+</p>
+
+<p>Send the last raised exception to the Application Insights service if
+telemetry_sender is not customized.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>instrumentation_key</span>
+      
+      
+        <span class='type'>(<tt>string</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used to identify which Application Insights application this data is for.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>telemetry_sender</span>
+      
+      
+        <span class='type'>(<tt>SenderBase</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used to send the last raised exception.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/unhandled_exception.rb', line 29</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span><span class='comma'>,</span> <span class='id identifier rubyid_telemetry_sender'>telemetry_sender</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='gvar'>$!</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='gvar'>$!</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>SystemExit</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='gvar'>$!</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>SignalException</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_telemetry_sender'>telemetry_sender</span>
+      <span class='ivar'>@sender</span> <span class='op'>=</span> <span class='id identifier rubyid_telemetry_sender'>telemetry_sender</span>
+    <span class='kw'>elsif</span> <span class='op'>!</span><span class='ivar'>@sender</span>
+      <span class='comment'># Use a synchronized sender to guarantee the data would be sent out once flush
+</span>      <span class='ivar'>@sender</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>SynchronousSender</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_queue'>queue</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>SynchronousQueue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='ivar'>@sender</span>
+    <span class='id identifier rubyid_channel'>channel</span> <span class='op'>=</span> <span class='const'>Channel</span><span class='op'>::</span><span class='const'>TelemetryChannel</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_queue'>queue</span>
+    <span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='const'>TelemetryClient</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_instrumentation_key'>instrumentation_key</span><span class='comma'>,</span> <span class='id identifier rubyid_channel'>channel</span>
+    <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_track_exception'>track_exception</span><span class='lparen'>(</span><span class='gvar'>$!</span><span class='comma'>,</span> <span class='label'>handled_at:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Unhandled</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue Feb 10 13:57:24 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
