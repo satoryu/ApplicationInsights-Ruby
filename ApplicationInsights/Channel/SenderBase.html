@@ -322,14 +322,14 @@ call <span class='object_link'><a href="#send-instance_method" title="Applicatio
       <pre class="lines">
 
 
-15
 16
 17
 18
-19</pre>
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span><span class='rparen'>)</span>
   <span class='ivar'>@service_endpoint_uri</span> <span class='op'>=</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
@@ -393,12 +393,12 @@ implement any means of doing so, derivations of this class do.</p>
       <pre class="lines">
 
 
-28
 29
-30</pre>
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_queue'>queue</span>
   <span class='ivar'>@queue</span>
@@ -455,12 +455,12 @@ of items in a single service request that this sender is going to send.</p>
       <pre class="lines">
 
 
-33
 34
-35</pre>
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_buffer_size'>send_buffer_size</span>
   <span class='ivar'>@send_buffer_size</span>
@@ -516,12 +516,12 @@ of items in a single service request that this sender is going to send.</p>
       <pre class="lines">
 
 
-23
 24
-25</pre>
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_service_endpoint_uri'>service_endpoint_uri</span>
   <span class='ivar'>@service_endpoint_uri</span>
@@ -585,7 +585,6 @@ service request fails, the passed in items are pushed back to the <span class='o
       <pre class="lines">
 
 
-38
 39
 40
 41
@@ -605,18 +604,10 @@ service request fails, the passed in items are pushed back to the <span class='o
 55
 56
 57
-58
-59
-60
-61
-62
-63
-64
-65
-66</pre>
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/sender_base.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_data_to_send'>data_to_send</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_uri'>uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='lparen'>(</span><span class='ivar'>@service_endpoint_uri</span><span class='rparen'>)</span>
@@ -631,21 +622,12 @@ service request fails, the passed in items are pushed back to the <span class='o
   <span class='id identifier rubyid_compressed_data'>compressed_data</span> <span class='op'>=</span> <span class='id identifier rubyid_compress'>compress</span><span class='lparen'>(</span><span class='id identifier rubyid_json'>json</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='id identifier rubyid_compressed_data'>compressed_data</span>
 
-  <span class='id identifier rubyid_http'>http</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_hostname'>hostname</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_port'>port</span>
+  <span class='id identifier rubyid_http'>http</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_hostname'>hostname</span><span class='comma'>,</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_port'>port</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>8888</span><span class='tstring_end'>'</span></span>
   <span class='kw'>if</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_scheme'>scheme</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>https</span><span class='tstring_end'>'</span></span>
     <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_verify_mode'>verify_mode</span> <span class='op'>=</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>SSL</span><span class='op'>::</span><span class='const'>VERIFY_NONE</span>
   <span class='kw'>end</span>
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
-
-  <span class='kw'>case</span> <span class='id identifier rubyid_response'>response</span>
-    <span class='kw'>when</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPSuccess</span><span class='comma'>,</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPRedirection</span><span class='comma'>,</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPBadRequest</span>
-      <span class='kw'>return</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_data_to_send'>data_to_send</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_item'>item</span><span class='op'>|</span>
-        <span class='ivar'>@queue</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='id identifier rubyid_item'>item</span>
-      <span class='kw'>end</span>
-  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -657,7 +639,7 @@ service request fails, the passed in items are pushed back to the <span class='o
 </div>
 
     <div id="footer">
-  Generated on Tue Feb 10 13:57:24 2015 by
+  Generated on Wed Mar  4 17:23:16 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-1.9.3).
 </div>

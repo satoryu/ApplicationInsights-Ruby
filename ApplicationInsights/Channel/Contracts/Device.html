@@ -348,6 +348,54 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#machine_name-instance_method" title="#machine_name (instance method)">- (Object) <strong>machine_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Gets the machine_name property.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#machine_name%3D-instance_method" title="#machine_name= (instance method)">- (Object) <strong>machine_name=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sets the machine_name property.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#model-instance_method" title="#model (instance method)">- (Object) <strong>model</strong> </a>
     
 
@@ -777,54 +825,6 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#vm_name-instance_method" title="#vm_name (instance method)">- (Object) <strong>vm_name</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Gets the vm_name property.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#vm_name%3D-instance_method" title="#vm_name= (instance method)">- (Object) <strong>vm_name=</strong>(value) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sets the vm_name property.</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -908,7 +908,7 @@
     <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.roleName</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.screenResolution</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
     <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.type</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span>
+    <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='kw'>nil</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_values'>values</span> <span class='op'>=</span> <span class='lbrace'>{</span>
   <span class='rbrace'>}</span>
@@ -1295,6 +1295,100 @@
     <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.locale</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.locale</span><span class='tstring_end'>'</span></span>
   <span class='kw'>else</span>
     <span class='ivar'>@values</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.locale</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="machine_name-instance_method">
+  
+    - (<tt>Object</tt>) <strong>machine_name</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Gets the machine_name property.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+240
+241
+242
+243
+244</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/contracts/device.rb', line 240</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_machine_name'>machine_name</span>
+  <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> 
+    <span class='ivar'>@values</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="machine_name=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>machine_name=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sets the machine_name property.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+247
+248
+249
+250
+251
+252
+253</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/contracts/device.rb', line 247</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_machine_name='>machine_name=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>==</span> <span class='ivar'>@defaults</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+    <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span>
+  <span class='kw'>else</span>
+    <span class='ivar'>@values</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.machineName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -2148,106 +2242,12 @@
 </table>
 </div>
     
-      <div class="method_details ">
-  <h3 class="signature " id="vm_name-instance_method">
-  
-    - (<tt>Object</tt>) <strong>vm_name</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Gets the vm_name property.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-240
-241
-242
-243
-244</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/contracts/device.rb', line 240</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_vm_name'>vm_name</span>
-  <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> 
-    <span class='ivar'>@values</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
-  <span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="vm_name=-instance_method">
-  
-    - (<tt>Object</tt>) <strong>vm_name=</strong>(value) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets the vm_name property.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-247
-248
-249
-250
-251
-252
-253</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/application_insights/channel/contracts/device.rb', line 247</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_vm_name='>vm_name=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span> <span class='op'>==</span> <span class='ivar'>@defaults</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
-    <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='ivar'>@values</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span>
-  <span class='kw'>else</span>
-    <span class='ivar'>@values</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ai.device.vmName</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Tue Feb 10 13:57:25 2015 by
+  Generated on Wed Mar  4 17:23:16 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-1.9.3).
 </div>
